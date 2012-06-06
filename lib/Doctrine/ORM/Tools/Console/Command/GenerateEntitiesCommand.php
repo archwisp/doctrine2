@@ -59,6 +59,10 @@ class GenerateEntitiesCommand extends Console\Command\Command
                 'dest-path', InputArgument::REQUIRED, 'The path to generate your entity classes.'
             ),
             new InputOption(
+                'generate-basename-only', null, InputOption::VALUE_OPTIONAL,
+                'Flag to define if generator should generate file names reflecting the class basename only.', false
+            ),
+            new InputOption(
                 'generate-annotations', null, InputOption::VALUE_OPTIONAL,
                 'Flag to define if generator should generate annotation metadata on entities.', false
             ),
@@ -136,6 +140,7 @@ EOT
             $entityGenerator = new EntityGenerator();
 
             $entityGenerator->setGenerateAnnotations($input->getOption('generate-annotations'));
+            $entityGenerator->setGenerateBasenameOnly($input->getOption('generate-basename-only'));
             $entityGenerator->setGenerateStubMethods($input->getOption('generate-methods'));
             $entityGenerator->setRegenerateEntityIfExists($input->getOption('regenerate-entities'));
             $entityGenerator->setUpdateEntityIfExists($input->getOption('update-entities'));

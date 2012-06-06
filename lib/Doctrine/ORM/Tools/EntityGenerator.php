@@ -108,6 +108,12 @@ class EntityGenerator
     private $generateAnnotations = false;
 
     /**
+     *  Whether or not the generated file name should only reflect the
+     *  class basename
+     */
+    private $generateBasenameOnly = false;
+
+    /**
      * @var string
      */
     private $annotationsPrefix = '';
@@ -271,7 +277,13 @@ public function <methodName>()
      */
     public function writeEntityClass(ClassMetadataInfo $metadata, $outputDirectory)
     {
-        $path = $outputDirectory . '/' . str_replace('\\', DIRECTORY_SEPARATOR, $metadata->name) . $this->extension;
+        if ($this->generateBasenameOnly) {
+            $classPath = substr($metadata->name, strrpos($metadata->name, '\\') + 1);
+        } else {
+            $classPath = str_replace('\\', DIRECTORY_SEPARATOR, $metadata->name);
+        } 
+        
+        $path = $outputDirectory . '/' . $classPath . $this->extension;;
         $dir = dirname($path);
 
         if ( ! is_dir($dir)) {
@@ -367,6 +379,18 @@ public function <methodName>()
     public function setExtension($extension)
     {
         $this->extension = $extension;
+    }
+
+    /**
+     * Set whether or not generated file names should only reflect the class
+     * bansename
+     * 
+     * @param bool $bool
+     * @return void
+     */
+    public function setGenerateBasenameOnly($bool)
+    {
+        $this->generateBasenameOnly = $bool;
     }
 
     /**
